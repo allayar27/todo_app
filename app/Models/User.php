@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -12,12 +13,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
+
+use Laravel\Scout\Searchable;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
+
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -46,14 +50,13 @@ class User extends Authenticatable
 
     public function scopeWhereHasAdmin(Builder $query)
     {
-        $user = $query->whereHas('roles', function($role) {
+        $user = $query->whereHas('roles', function ($role) {
             $role->where('name', 'admin');
         });
 
         return $user;
-        //return $this->roles->contains('name', 'admin');
     }
-    
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -67,5 +70,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function toSearchableArray()
+    {
+        return [
+        'name' => $this->name,
+        'email' => $this->email,
+        ];
+    }
+
+    public function searchableAs()
+    {
+        return 'users';
+    }
 
 }

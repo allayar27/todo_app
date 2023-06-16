@@ -11,18 +11,22 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
 
+
 class UserController extends Controller
 {
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $users = User::query()->orderByDesc('created_at')->paginate(2);
-
-        if (request()->has('search')) {
-            $users->where('name', 'Like', '%' . request()->input('search') . '%');
+        if ($request->has('search')) {
+            $users = User::search($request->search)
+                ->paginate(6);
+        } else {
+            $users = User::paginate(2);
         }
-
+        
+        $users = User::paginate(2);
         return view('users.index', compact('users'));
+        
     }
 
 
@@ -68,7 +72,8 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::query()->findOrFail($id);
+        return view('users.edit', compact('user'));
     }
 
     /**

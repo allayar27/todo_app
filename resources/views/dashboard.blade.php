@@ -15,20 +15,29 @@
             <h1>Dashboard</h1>
         </div>
     </x-slot>
-    <div class="card">
-        <div class="card-header">
-            <h4>Main Card</h4>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="min-w-full border-b border-gray-200 shadow">
+             <div id="app">
+                <div id="autocomplete">
+                </div>
+             </div>
         </div>
-        <div class="card-body">
-            <p>{{ __('You are logged in') }}
-            as {{ auth()->user()->hasRole('admin') == true
-                ? 'Admin'
-                : 'User' }}!</p>
+        <div class="card mt-3">
+            <div class="card-header">
+                <h4>Main Card</h4>
+            </div>
+            <div class="card-body">
+                <p>{{ __('You are logged in') }}
+                as {{ auth()->user()->hasRole('admin') == true
+                    ? 'Admin'
+                    : 'User' }}!</p>
+            </div>
+            <div class="card-footer">
+                This is card footer
+            </div>
         </div>
-        <div class="card-footer">
-            This is card footer
-        </div>
+
     </div>
-        </div>
+    </div>
     </div>
 </x-app-layout>
