@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\TaskConfirmController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -20,8 +20,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('tasks', \App\Http\Controllers\TaskController::class);
-    Route::resource('users', UserController::class);
+    Route::put('tasks/{task}/comfirm', TaskConfirmController::class)->name('tasks.confirm');
 
 });
 
 require __DIR__.'/auth.php';
+require __DIR__.'/admin.php';

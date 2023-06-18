@@ -14,16 +14,10 @@ class TaskController extends Controller
 
     public function index(): View
     {
-        $tasks = Task::query()->orderByDesc('created_at')->get();
-        return view('todo.index', compact('tasks'));
+        $tasks = Task::query()->orderByDesc('id')->paginate(6);
+        return view('tasks.index', compact('tasks'));
     }
-
-
-    public function create()
-    {
-        
-    }
-
+    
 
     public function store(TaskRequest $request, Task $task): RedirectResponse
     {
@@ -33,16 +27,11 @@ class TaskController extends Controller
     }
 
 
-    public function show(string $id)
-    {
-        //
-    }
-
 
     public function edit(string $id): View
     {
         $task = Task::query()->findOrFail($id);
-        return view('todo.edit', compact('task'));
+        return view('tasks.edit', compact('task'));
     }
 
 

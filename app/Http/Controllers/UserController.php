@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserFormRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Jobs\UserSignUpJob;
 use App\Mail\UserSignUpMail;
 use App\Models\User;
@@ -21,18 +22,15 @@ class UserController extends Controller
             $users = User::search($request->search)
                 ->paginate(6);
         } else {
-            $users = User::paginate(2);
+            $users = User::query()->latest()->paginate(6);
         }
-        
-        $users = User::paginate(2);
         return view('users.index', compact('users'));
-        
     }
 
 
     public function create(): View
     {
-        $roles = Role::all();
+        $roles = Role::query()->latest()->get();
         return view('users.create', compact('roles'));
     }
 
@@ -62,33 +60,42 @@ class UserController extends Controller
     }
 
 
-    public function show(string $id)
+    public function show(User $user)
     {
-        //
+        $user->query()->findOrFail($user->id);
+        return view('users.show', compact('user'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        $user = User::query()->findOrFail($id);
-        return view('users.edit', compact('user'));
+        $user->query()->findOrFail($user->id);
+        $roles = Role::query()->latest()->get();
+        $userHasRoles = $user->roles->pluck('name')->toArray();
+
+        return view('users.edit', compact('user', 'roles', 'userHasRoles'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        //
+        $user->where('id', $user->id)->update($request->validated());
+        $roles = $request->roles ?? [];
+        $user->syncRoles($roles);
+
+        return redirect(route('users.index'))->withSuccess(__('User updated successfully.'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->query()->find($user->id)->delete();
+        return redirect(route('users.index'))->withSuccess(__('User deleted successfully.'));
     }
 }

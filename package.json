@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "@algolia/autocomplete-js": "^1.9.3",
+        "@algolia/autocomplete-plugin-redirect-url": "^1.9.3",
         "@algolia/autocomplete-theme-classic": "^1.9.3",
         "@vitejs/plugin-vue": "^4.2.3",
         "vue": "^3.3.4"

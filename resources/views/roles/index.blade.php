@@ -1,47 +1,41 @@
 <x-app-layout>
     <x-slot name="header">
-        <nav class="flex justify-center space-x-4">
+        <nav class="navbar navbar-light bg-light">
             <div class="container">
-                <form action="{{ route('tasks.store') }}" method="POST" class="mt-6 space-y-6">
-                    @csrf
-                    <div class="mb-3 space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" placeholder="enter the title" />
-                        <x-input-error class="mt-2" :messages="$errors->get('title')" />
-                        <x-primary-button class="mt-1">{{ __('Save') }}</x-primary-button>
-                    </div>
-                </form>
-
+                <a href="/roles"><span class="navbar-brand mb-0 h1">Roles list</span></a>
+                <a href="{{ route('roles.create') }}">
+                    <x-primary-button>{{ __('create') }}</x-primary-button>
+                </a>
             </div>
         </nav>
-    </x-slot>
+</x-slot>
 
-    <div class="py-12">
+<div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col" width="2%">#</th>
-                        <th scope="col" width="7%">title</th>
-                        <th scope="col" width="7%">date</th>
-                        <th scope="col" width="7%">status</th>
-                        <th scope="col" width="1%" colspan="2">actions</th>
+                        <th scope="col" width="7%">name</th>
+                        <th scope="col" width="1%" colspan="3">actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                @forelse($tasks as $task)
+                @forelse($roles as $role)
                     <tr>
                         <th scope="row">{{ $loop->iteration }}</th>
-                        <td>{{ $task->title }}</td>
-                        <td>{{ $task->created_at }}</td>
+                        <td>{{ $role->name }}</td>
                         <td>
-                            <div class="badge bg-success">Completed</div>
+                            <a href="{{ route('roles.show', $role->id) }}" type="submit">
+                                <i class="bi bi-info-circle" style="font-size: 1rem; color: blue;"></i>
+                            </a>
                         </td>
                         <td>
-                            <a href="{{ route('tasks.edit', $task->id) }}" type="submit">
+                            <a href="{{ route('roles.edit', $role->id) }}" type="submit">
                                 <i class="bi bi-pencil-square" style="font-size: 1rem; color: blue;"></i>
                             </a>
                         </td>
-                        <form action="{{ route('tasks.destroy', $task->id) }}" method="post">
+                        <form action="{{ route('roles.destroy', $role->id) }}" method="post">
                             @csrf
                             @method('DELETE')
                             <td>

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,10 @@ class TaskFactory extends Factory
      */
     public function definition(): array
     {
+        $user = new User();
         return [
-            //
+            'title' => fake()->title(),
+            'user_id' => rand(1, 10),
         ];
     }
 }

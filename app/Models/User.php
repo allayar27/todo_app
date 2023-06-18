@@ -4,7 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -72,12 +72,9 @@ class User extends Authenticatable
     ];
 
 
-    public function toSearchableArray()
+    public function getCreatedAtAttribute($value)
     {
-        return [
-        'name' => $this->name,
-        'email' => $this->email,
-        ];
+        return Carbon::parse($value)->format('d/m/Y H:i');
     }
 
     public function searchableAs()

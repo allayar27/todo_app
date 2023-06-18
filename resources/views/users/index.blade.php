@@ -16,16 +16,18 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="min-w-full border-b border-gray-200 shadow">
                 <form method="GET" action="{{ route('users.index') }}">
-                    <div  id="autocomplete" class="py-2 flex">
+                    <div class="py-2 flex">
                         <div class="overflow-hidden flex pl-4">
                             <input type="text" name="search" value="{{ old('search') }}"
                                 class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 placeholder="Search">
-                            <button type='submit'
+                            <button 
                                 class='ml-4 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
                                 {{ __('Search') }}
                             </button>
                         </div>
+                        
+
                     </div>
                 </form>
 
@@ -37,7 +39,7 @@
                             <th scope="col" width="10%">email</th>
                             <th scope="col" width="7%">role</th>
                             <th scope="col" width="7%">registration date</th>
-                            <th scope="col" width="1%" colspan="2">actions</th>
+                            <th scope="col" width="1%" colspan="3">actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,7 +54,11 @@
                                     @endforeach
                                 </td>
                                 <td>{{ $user->created_at }}</td>
-
+                                <td>
+                                    <a href="{{ route('users.show', $user->id) }}" type="submit">
+                                        <i class="bi bi-info-circle" style="font-size: 1rem; color: blue;"></i>
+                                    </a>
+                                </td>
                                 <td>
                                     <a href="{{ route('users.edit', $user->id) }}" type="submit">
                                         <i class="bi bi-pencil-square" style="font-size: 1rem; color: blue;"></i>
@@ -79,7 +85,7 @@
                     </tbody>
                 </table>
                 <div class="card-footer d-flex justify-content-end">
-                    {{ $users->withQueryString()->links() }}
+                    {{ $users->links() }}
                 </div>
             </div>
 

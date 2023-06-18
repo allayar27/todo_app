@@ -11,24 +11,28 @@
     import algoliasearch from 'algoliasearch/lite';
     import { autocomplete, getAlgoliaResults } from '@algolia/autocomplete-js';
 
+    
+
+
     import '@algolia/autocomplete-theme-classic';
 
     const searchClient = algoliasearch(
     '6P3J1M2CVG', 'cf96758c66657f78d06fe8e09b84d38f'
     
     );
+
+    
+
     export default {
     name: 'App',
     setup() {
         onMounted(() => {
 
-
-           
-
             autocomplete({
                 container: '#autocomplete',
-                placeholder: 'Search for products',
+                placeholder: 'Algolia search',
                 insights: true,
+                openOnFocus: true,
                 getSources({ query }) {
                     return [
                         {
@@ -60,15 +64,15 @@
                                                                 attribute: 'name',
                                                             })}
                                                             </div>
-                                                        <div class="aa-ItemContentDescription">
-                                                        ${components.Snippet({
-                                                                hit: item,
-                                                                attribute: 'email',
-                                                        })}
+                                                            <div class="aa-ItemContentDescription">
+                                                            ${components.Snippet({
+                                                                    hit: item,
+                                                                    attribute: 'email',
+                                                            })}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>`;
+                                                </div>`;
                                 },
                             },
                         },
